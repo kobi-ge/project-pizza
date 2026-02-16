@@ -7,5 +7,3 @@ app = FastAPI()
 
 app.include_router(router)
 
-
-#uvicorn.run(app, host="localhost", port=8000)

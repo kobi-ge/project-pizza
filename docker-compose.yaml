@@ -67,6 +67,8 @@ services:
       PORT: 27017
       USER: kodi
       PASSWORD: word
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       mongo:
         condition: service_healthy

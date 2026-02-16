@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 import os
+import json
 
 host = os.getenv("HOST" ,"localhost")
 port = os.getenv("PORT" ,27017)
@@ -37,3 +38,9 @@ class MongoService:
             print("insertion failed")
             raise e
         
+    def get_data(self, order_id):
+        query = {"order_id": order_id}
+        result = self.collection.find(query).to_list()
+        result[0]['_id'] = str(result[0]['_id'])
+        result[0]['uuid'] = str(result[0]['uuid'])
+        return result[0]

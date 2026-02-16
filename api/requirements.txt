@@ -3,3 +3,4 @@ pymongo
 uvicorn
 python-multipart
 confluent_kafka
+redis
