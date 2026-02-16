@@ -29,3 +29,11 @@ class MongoService:
         self.collection = self.db['pizza_collection']
         return self.collection
     
+    def insert(self, value):
+        try:
+            result = self.collection.insert_one(value)
+            return result
+        except Exception as e:
+            print("insertion failed")
+            raise e
+        
