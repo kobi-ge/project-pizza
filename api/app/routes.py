@@ -34,10 +34,12 @@ def get_order(order_id: str):
         }
     print("cache miss")
     result = client.get_data(order_id)
-    r.insert(order_id, result)
-    return {
-            "result": result,
-            "source": "mongodb"
-        }
+    if not isinstance(result, str):
+        r.insert(order_id, result)
+        return {
+                "result": result,
+                "source": "mongodb"
+            }
+    return result
 
     

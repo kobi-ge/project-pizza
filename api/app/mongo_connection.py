@@ -41,6 +41,8 @@ class MongoService:
     def get_data(self, order_id):
         query = {"order_id": order_id}
         result = self.collection.find(query).to_list()
-        result[0]['_id'] = str(result[0]['_id'])
-        result[0]['uuid'] = str(result[0]['uuid'])
-        return result[0]
+        if result:
+            result[0]['_id'] = str(result[0]['_id'])
+            result[0]['uuid'] = str(result[0]['uuid'])
+            return result[0]
+        return "no match found in mongo db"
