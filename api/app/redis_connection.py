@@ -18,7 +18,7 @@ class ConnectRedis:
     
     def insert(self, key, value):
         try:
-            self.r.set(key , value=json.dumps(value, default=str))
+            self.r.set(key , value=json.dumps(value, default=str), ex=36000)
         except RedisError as e:
             print("error inserting to redis")
             raise e
