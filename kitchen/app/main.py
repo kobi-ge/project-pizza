@@ -1,4 +1,4 @@
-#from consumer import consumer
+from consumer import consumer
 import time
 import json
 
@@ -7,13 +7,7 @@ from utils import delete_from_redis
 from mongo_connection import MongoService
 from confluent_kafka import Consumer
 
-consumer_config = {
-    "bootstrap.servers": "kafka:9092",
-    "group.id": "kitchen-team",
-    "auto.offset.reset": "earliest"
-}
 
-consumer = Consumer(consumer_config)
 
 consumer.subscribe(["pizza-orders"])
 
@@ -24,11 +18,12 @@ client.connect()
 collection = client.create_collection()
 r = ConnectRedis()
 r = r.connect()
+print('asdff')
+
 
 
 try:
     while True:
-        time.sleep(15)
         msg = consumer.poll(1.0)
         if msg is None:
             continue
@@ -38,10 +33,11 @@ try:
 
         value = msg.value().decode('utf-8')
         order = json.loads(value)
-        #delete_from_redis(order['order_id'], r)
+        delete_from_redis(order['order_id'], r)
         print("data deleted from redis")
-        #client.update({"order_id": order['order_id']}, {"$set": {"status": "DELIVERED"}})
+        client.update({"order_id": order['order_id']}, {"$set": {"status": "DELIVERED"}})
         print(f"order: {order['order_id']} cache was deleted from redis and updated version sent to mongo")
+        time.sleep(15)
 except KeyboardInterrupt:
     print("\n🔴 Stopping kitchen consumer")
     consumer.close()

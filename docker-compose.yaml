@@ -73,9 +73,17 @@ services:
       kafka:
         condition: service_healthy
 
-  # text_processing:
-  #   build: /text
-
+  text_processing:
+    build: /text
+    environment:
+      HOST: mongo
+      PORT: 27017
+      USER: kodi
+      PASSWORD: word
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      kafka:
+        condition: service_healthy
   api:
     build: /api
     ports:
