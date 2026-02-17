@@ -4,6 +4,12 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
+    healthcheck:
+      test: [ "CMD-SHELL", "kafka-cluster cluster-id --bootstrap-server localhost:9092 || exit 1" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
     environment:
       KAFKA_KRAFT_MODE: 'true'
@@ -35,7 +41,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: kodi
       MONGO_INITDB_ROOT_PASSWORD: word
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping').ok"]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping').ok" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -45,15 +51,27 @@ services:
     image: redis:latest
     #restart: always
     ports:
-    - 6379:6379
+      - 6379:6379
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: [ "CMD-SHELL", "redis-cli ping | grep PONG" ]
       interval: 1s
       timeout: 3s
       retries: 5
 
-  # kitchen_worker:
-  #   build: /kitchen
+  kitchen_worker:
+    build: /kitchen
+    restart: always
+    environment:
+      HOST: mongo
+      PORT: 27017
+      USER: kodi
+      PASSWORD: word
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      kafka:
+        condition: service_healthy
 
   # text_processing:
   #   build: /text
@@ -61,7 +79,7 @@ services:
   api:
     build: /api
     ports:
-    - 8000:8000
+      - 8000:8000
     environment:
       HOST: mongo
       PORT: 27017
@@ -71,6 +89,8 @@ services:
       REDIS_PORT: 6379
     depends_on:
       mongo:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
 
 volumes:
