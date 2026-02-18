@@ -33,8 +33,8 @@ def main():
             current_prep = get_prep_by_type(prep_data, order['pizza_type'])
             cleaned_current_prep = clearing_the_data(current_prep)
             print(f"cleaned special instructions for order {order['order_id']} and prep instructions for current pizza type") 
-            data_teady = get_structure_data(order, order['pizza_type'], cleaned_special_instructions, cleaned_current_prep)
-            produce_to_kafka(data_teady)
+            data_ready = get_structure_data(order, order['pizza_type'], cleaned_special_instructions, cleaned_current_prep)
+            produce_to_kafka(data_ready)
             print(f"order: {order['order_id']} was sent to kafka with updated fields")
     except KeyboardInterrupt:
         print("\n🔴 Stopping kitchen consumer")

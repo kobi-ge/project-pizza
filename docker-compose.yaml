@@ -73,8 +73,8 @@ services:
       kafka:
         condition: service_healthy
 
-  text_processing:
-    build: /text
+  preprocessor:
+    build: /preprocessor
     environment:
       HOST: mongo
       PORT: 27017
@@ -100,6 +100,17 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+
+  enricher:
+    build: /enricher
+    environment:
+      HOST: mongo
+      PORT: 27017
+      USER: kodi
+      PASSWORD: word
+    depends_on:
+      - preprocessor
+      - mongo
 
 volumes:
   kafka_kraft:

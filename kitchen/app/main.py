@@ -35,7 +35,7 @@ try:
         order = json.loads(value)
         delete_from_redis(order['order_id'], r)
         print("data deleted from redis")
-        client.update({"order_id": order['order_id']}, {"$set": {"status": "DELIVERED"}})
+        #client.update({"order_id": order['order_id']}, {"$set": {"status": "DELIVERED"}})
         print(f"order: {order['order_id']} cache was deleted from redis and updated version sent to mongo")
         time.sleep(15)
 except KeyboardInterrupt:
