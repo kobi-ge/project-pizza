@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: preprocessor
+  labels:
+    app: preprocessor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: preprocessor
+  template:
+    metadata:
+      labels:
+        app: preprocessor
+    spec:
+      containers:
+      - name: preprocessor
+        image: kobigdocker/preprocessor
+        env:
+        - name: HOST
+          value: mongo
+        - name: PORT
+          value: "27017"
+        - name: USER
+          value: kodi
+        - name: PASSWORD
+          value: word

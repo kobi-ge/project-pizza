@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: enricher
+  labels:
+    app: enricher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: enricher
+  template:
+    metadata:
+      labels:
+        app: enricher
+    spec:
+      containers:
+      - name: enricher
+        image: kobigdocker/enricher
+        env:
+        - name: HOST
+          value: mongo
+        - name: PORT
+          value: "27017"
+        - name: USER
+          value: kodi
+        - name: PASSWORD
+          value: word

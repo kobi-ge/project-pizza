@@ -16,7 +16,7 @@ def set_keys(data):
     data['is_alergan'] = False
     data['is_kosher'] = True
     data['is_meat'] = False
-    data['is_dairy'] = True
+    data['is_dairy'] = False
     data['status'] = "DELIVERED"
     return data
 

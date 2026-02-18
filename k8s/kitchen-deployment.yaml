@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kitchen
+  labels:
+    app: kitchen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kitchen
+  template:
+    metadata:
+      labels:
+        app: kitchen
+    spec:
+      containers:
+      - name: kitchen
+        image: kobigdocker/kitchen
+        env:
+        - name: HOST
+          value: mongo
+        - name: PORT
+          value: "27017"
+        - name: USER
+          value: kodi
+        - name: PASSWORD
+          value: word
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
