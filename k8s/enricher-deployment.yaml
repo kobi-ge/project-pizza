@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: enricher
-        image: kobigdocker/enricher
+        image: kobigdocker/enricher:v1.2
         env:
         - name: HOST
           value: mongo
@@ -26,3 +26,9 @@ spec:
           value: kodi
         - name: PASSWORD
           value: word
+        - name: REDIS_HOST
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+        - name: PYTHONUNBUFFERED
+          value: "1"

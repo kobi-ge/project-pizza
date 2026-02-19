@@ -108,6 +108,9 @@ services:
       PORT: 27017
       USER: kodi
       PASSWORD: word
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PYTHONUNBUFFERED: 1
     depends_on:
       - preprocessor
       - mongo
